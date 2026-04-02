@@ -1,7 +1,7 @@
 # 웹 편의사항 롤백
 - 좋아요, 썸네일 사이즈, 대화량 등이 롤백됩니다.
 - 다운로드:
-https://github.com/h-ap5/auto-memory/raw/refs/heads/main/auto-memory.user.js
+https://github.com/h-ap5/rollback/raw/refs/heads/main/rollback.user.js
 
 
 ---
