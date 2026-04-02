@@ -25,25 +25,48 @@
         }
 
         /* =========================================
-           2. [채팅창 목록] 좌측 패널 썸네일 (깔끔함을 위해 이곳만 1:1 유지)
+           2. [채팅창 목록] 좌측 패널 썸네일 1:1 고정 & 뱃지 겹침
            ========================================= */
+        a[href*="/episodes/"] {
+            position: relative !important;
+        }
+
         div[width="32"][height="48"],
         a[href*="/episodes/"] .aspect-\\[2\\/3\\] {
             width: 48px !important;
             height: 48px !important;
             aspect-ratio: 1 / 1 !important;
         }
-        a[href*="/episodes/"] img:not(.blur-md) {
+
+        /* 크리지널 로고(crack original)는 제외하고 캐릭터 프사만 1:1로 꽉 채움 */
+        div[width="32"][height="48"] img:not(.blur-md):not([alt="crack original"]),
+        a[href*="/episodes/"] .aspect-\\[2\\/3\\] img:not(.blur-md):not([alt="crack original"]) {
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
         }
-        a[href*="/episodes/"] img.blur-md { display: none !important; }
+
+        div[width="32"][height="48"] img.blur-md,
+        a[href*="/episodes/"] .aspect-\\[2\\/3\\] img.blur-md {
+            display: none !important;
+        }
+
+        /* 알림 뱃지 위치 보정 */
+        a[href*="/episodes/"] div[class*="Badge"] {
+            position: absolute !important;
+            top: 4px !important;
+            left: 4px !important;
+            z-index: 20 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 4px !important;
+            transform: scale(0.8) !important;
+            transform-origin: top left !important;
+        }
 
         /* =========================================
-           3. 🚨 [스토리 상세 페이지] 원본 비율 자동 맞춤 & 블러 삭제
+           3. [스토리 상세 페이지] 원본 비율 자동 맞춤 & 블러 삭제
            ========================================= */
-        /* 배경 이미지가 들어가는 최상단 껍데기 무력화 */
         .css-bdwsp8 .bg-cover.bg-center {
             background-image: none !important;
             background-color: transparent !important;
@@ -52,64 +75,67 @@
             min-height: unset !important;
             padding: 0 !important;
         }
+        .css-bdwsp8 .backdrop-blur-\\[10px\\] { display: none !important; }
 
-        /* 붕 뜨게 만드는 원흉인 블러 레이어 찢어버리기 */
-        .css-bdwsp8 .backdrop-blur-\\[10px\\] {
-            display: none !important;
-        }
-
-        /* 프사 껍데기의 너비는 고정하되, 높이는 사진 비율에 맞게 알아서 늘어나도록 설정 */
         .css-1f8kyq {
             width: 270px !important;
-            height: auto !important; /* 높이 자동 */
+            height: auto !important; /* 사진 비율에 맞춰 세로로 늘어남 */
             max-width: 100% !important;
             position: relative !important;
+            display: block !important;
         }
-        /* 억지로 2:3 맞추던 속성 무력화 */
         .css-1f8kyq .aspect-\\[2\\/3\\] {
             aspect-ratio: auto !important;
             height: auto !important;
+            display: block !important;
         }
-        /* ❗️수정됨❗️ 원본 비율 그대로 출력 (잘림 없음, 여백 없음) */
-        .css-1f8kyq .aspect-\\[2\\/3\\] img:not(.blur-md) {
+
+        /* 크리지널 로고 제외, 캐릭터 프사만 원본 비율로 출력 */
+        .css-1f8kyq .aspect-\\[2\\/3\\] img:not(.blur-md):not([alt="crack original"]) {
             position: relative !important;
             object-fit: contain !important;
             width: 100% !important;
-            height: auto !important; /* 원본 비율대로 출력 */
+            height: auto !important;
             display: block !important;
         }
 
         /* =========================================
-           4. [정보창 팝업 모달] 프사 원본 비율 자동 맞춤
+           4. 🚨 [정보창 팝업 모달] 원본 비율 자동 맞춤 (여백/블러 제거) 🚨
            ========================================= */
-        .character-info-modal-content-body .w-\\[220px\\].h-\\[330px\\] {
+        div[role="dialog"] .character-info-modal-content-body div[class*="w-\\[220px\\]"] {
             width: 220px !important;
-            height: auto !important; /* 높이 자동 */
+            height: auto !important; /* 1:1 강제 해제, 원본 비율 존중 */
             position: relative !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            display: block !important; /* flex 금지 (찌그러짐 방지) */
         }
-        .character-info-modal-content-body .w-\\[220px\\] .aspect-\\[2\\/3\\] {
-            aspect-ratio: auto !important;
+        div[role="dialog"] .character-info-modal-content-body div[class*="w-\\[220px\\]"] .aspect-\\[2\\/3\\] {
+            aspect-ratio: auto !important; /* 1:1 강제 해제 */
+            width: 100% !important;
             height: auto !important;
+            display: block !important;
         }
-        /* 블러 이미지 완전 삭제 */
-        .character-info-modal-content-body img.blur-md {
+        div[role="dialog"] .character-info-modal-content-body div[class*="w-\\[220px\\]"] img.blur-md {
             display: none !important;
         }
-        /* ❗️수정됨❗️ 원본 비율 그대로 출력 (잘림 없음, 여백 없음) */
-        .character-info-modal-content-body .w-\\[220px\\] img:not(.blur-md) {
+
+        /* 🚨 크리지널 로고 제외, 캐릭터 프사만 원본 비율에 맞춰 높이 조절 🚨 */
+        div[role="dialog"] .character-info-modal-content-body div[class*="w-\\[220px\\]"] img:not(.blur-md):not([alt="crack original"]) {
             position: relative !important;
             inset: auto !important;
             width: 100% !important;
             height: auto !important; /* 원본 비율대로 출력 */
-            object-fit: contain !important;
+            object-fit: contain !important; /* 원본 훼손 없이 꽉 채움 */
             border-radius: inherit;
             display: block !important;
         }
 
         /* =========================================
-           5. 커스텀 좋아요 하트 버튼 (프사 우측 하단)
+           5. 좋아요 하트 버튼 커스텀 (프사 우측 하단)
            ========================================= */
-        .custom-like-wrapper {
+        .character-info-modal-content-body div[class*="w-\\[220px\\]"] > button[aria-label="좋아요"],
+        .css-1f8kyq > button[aria-label="좋아요"] {
             position: absolute !important;
             bottom: 12px !important;
             right: 12px !important;
@@ -118,24 +144,19 @@
             border-radius: 50% !important;
             padding: 8px !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
             width: 44px !important;
             height: 44px !important;
-        }
-        html[data-theme="dark"] .custom-like-wrapper { background: rgba(30, 30, 30, 0.85) !important; }
-        .custom-like-wrapper button {
-            width: 100% !important;
-            height: 100% !important;
-            background: transparent !important;
-            padding: 0 !important;
-            border: none !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
+            border: none !important;
         }
-        .custom-like-wrapper button svg {
+        html[data-theme="dark"] .character-info-modal-content-body div[class*="w-\\[220px\\]"] > button[aria-label="좋아요"],
+        html[data-theme="dark"] .css-1f8kyq > button[aria-label="좋아요"] {
+            background: rgba(30, 30, 30, 0.85) !important;
+        }
+        .character-info-modal-content-body div[class*="w-\\[220px\\]"] > button[aria-label="좋아요"] svg,
+        .css-1f8kyq > button[aria-label="좋아요"] svg {
             width: 24px !important;
             height: 24px !important;
             fill: #FF4432 !important;
@@ -152,24 +173,32 @@
 
     // 좋아요 버튼 위치 조작
     const observer = new MutationObserver(() => {
-        const likeBtn = document.querySelector('button[aria-label="좋아요"]');
+        const likeBtns = document.querySelectorAll('button[aria-label="좋아요"]');
 
-        if (likeBtn && !likeBtn.dataset.moved) {
-            const detailProfile = document.querySelector('.css-1f8kyq');
-            const modalProfile = document.querySelector('.character-info-modal-content-body .w-\\[220px\\]');
+        likeBtns.forEach(btn => {
+            if (btn.dataset.moved) return;
 
-            const targetContainer = detailProfile || modalProfile;
-
-            if (targetContainer) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'custom-like-wrapper';
-
-                wrapper.appendChild(likeBtn);
-                targetContainer.appendChild(wrapper);
-
-                likeBtn.dataset.moved = 'true';
+            // 1. 모달창
+            const modalBody = btn.closest('.character-info-modal-content-body');
+            if (modalBody) {
+                const modalProfile = modalBody.querySelector('div[class*="w-\\[220px\\]"]');
+                if (modalProfile && btn.parentElement !== modalProfile) {
+                    modalProfile.appendChild(btn);
+                    btn.dataset.moved = 'true';
+                }
+                return;
             }
-        }
+
+            // 2. 상세 페이지
+            const detailProfile = document.querySelector('.css-1f8kyq');
+            if (detailProfile && document.body.contains(detailProfile)) {
+                const detailContainer = btn.closest('.css-bdwsp8');
+                if (detailContainer && btn.parentElement !== detailProfile) {
+                    detailProfile.appendChild(btn);
+                    btn.dataset.moved = 'true';
+                }
+            }
+        });
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
